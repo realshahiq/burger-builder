@@ -23,3 +23,7 @@
 .Close {
   transform: translateX(-100%);
 }
+.SideDrawer .Logo-container {
+  height: 11%;
+  margin-bottom: 20px;
+}
