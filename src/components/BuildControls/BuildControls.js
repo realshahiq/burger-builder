@@ -14,7 +14,7 @@ const BuildControls = (props) => (
   <div className="BuildControls">
     {
       controls.map(control => (
-        <BuildControl added={props.addIngredient} type={control.type} label={control.label} key={control.label}></BuildControl>
+        <BuildControl  disabled={props.disabled[control.type]} added={props.addIngredient} removed={props.removeIngredient} type={control.type} label={control.label} key={control.label}></BuildControl>
       ))
     }
     {/* {buildcontrol} */}
