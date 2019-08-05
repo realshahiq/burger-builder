@@ -6,7 +6,7 @@ const checkoutSummary = (props) => {
     return (
         <div className="CheckoutSummary">
             <h1>Hope it tastes well!</h1>
-            <div style={{ width: '300px', height: '300px', margin: 'auto' }}>
+            <div style={{ width: '440px', height: '450px', margin: 'auto' }}>
                 <Burger ingredients={props.ingredients} />
                 <Button clicked={props.checkoutCancelled} class="Danger">CANCEL</Button>
                 <Button clicked={props.checkoutContinued} class="Success">Success</Button>
