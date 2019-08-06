@@ -6,11 +6,49 @@ import Input from '../../../UI/Input/Input';
 import './CheckoutData.css';
 class CheckoutData extends Component {
   state = {
-    name: '',
-    email: '',
-    address: {
-      street: '',
-      postalCode: ''
+    orderForm: {
+      name: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Name'
+        },
+        value: ''
+      },
+      street: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Street'
+        },
+        value: ''
+      },
+      zipcode: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Zipcode'
+        },
+        value: ''
+      },
+      email: {
+        elementType: 'email',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Email'
+        },
+        value: ''
+      },
+      deliveryMethod: {
+        elementType: 'select',
+        elementConfig: {
+          options: [
+            { value: 'fastest', displayValue: 'Fastest' },
+            { value: 'cheapest', displayValue: 'Cheapest' },
+          ]
+        },
+        value: ''
+      }
     },
     loading: false
   }
@@ -20,15 +58,15 @@ class CheckoutData extends Component {
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      customer: {
-        name: 'Syed Shahiq',
-        address: {
-          street: 'Teststreet 1',
-          zipcode: '12321'
-        },
-        email: 'shahiqurrehman@gmail.com',
-      },
-      deliveryMethod: 'fastest'
+      // customer: {
+      //   name: 'Syed Shahiq',
+      //   address: {
+      //     street: 'Teststreet 1',
+      //     zipcode: '12321'
+      //   },
+      //   email: 'shahiqurrehman@gmail.com',
+      // },
+      // deliveryMethod: 'fastest'
     }
     axios.post('/orders.json', order).then(response => {
       this.setState({ loading: false });
@@ -37,15 +75,28 @@ class CheckoutData extends Component {
       this.setState({ loading: false })
     })
   }
+  inputChangeHandler = (event, elementId) => {
+    const updatedOrderForm = { ...this.state.orderForm };
+    const updatedFormElement = { ...updatedOrderForm[elementId] };
+    updatedFormElement.value = event.target.value;
+    updatedOrderForm[elementId] = updatedFormElement;
+    this.setState({ orderForm: updatedOrderForm });
+  }
   render() {
+    const formElementArray = [];
+    for (let key in this.state.orderForm) {
+      formElementArray.push({
+        id: key,
+        config: this.state.orderForm[key]
+      })
+    }
     let form = (
       <div>
         <h4>Enter Your Contact Data</h4>
         <form>
-          <Input label="Name" inputtype="input" type="text" name="name" placeholder="Name"/>
-          <Input label="Email" inputtype="input" type="email" name="email" placeholder="Email"/>
-          <Input label="Street" inputtype="input" type="text" name="street" placeholder="Street"/>
-          <Input label="Postal Code" inputtype="input" type="text" name="postalcode" placeholder="Postal Code"/>
+          {formElementArray.map(formElement => (
+            <Input changed={(event) => this.inputChangeHandler(event, formElement.id)} key={formElement.id} elementType={formElement.config.elementType} elementConfig={formElement.config.elementConfig} value={formElement.config.value} />
+          ))}
           <Button class="Success" clicked={this.orderHandler}>ORDER NOW</Button>
         </form>
       </div>
