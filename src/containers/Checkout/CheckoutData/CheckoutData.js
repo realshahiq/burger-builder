@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from '../../../axios-orders';
 import Button from '../../../UI/Button/Button';
 import Spinner from '../../../UI/Spinner/Spinner';
+import Input from '../../../UI/Input/Input';
 import './CheckoutData.css';
 class CheckoutData extends Component {
   state = {
@@ -41,10 +42,10 @@ class CheckoutData extends Component {
       <div>
         <h4>Enter Your Contact Data</h4>
         <form>
-          <input type="text" name="name" placeholder="Your Name" />
-          <input type="email" name="email" placeholder="Your Email" />
-          <input type="text" name="street" placeholder="Your Street" />
-          <input type="text" name="postalcode" placeholder="Your Postal Code" />
+          <Input label="Name" inputtype="input" type="text" name="name" placeholder="Name"/>
+          <Input label="Email" inputtype="input" type="email" name="email" placeholder="Email"/>
+          <Input label="Street" inputtype="input" type="text" name="street" placeholder="Street"/>
+          <Input label="Postal Code" inputtype="input" type="text" name="postalcode" placeholder="Postal Code"/>
           <Button class="Success" clicked={this.orderHandler}>ORDER NOW</Button>
         </form>
       </div>
