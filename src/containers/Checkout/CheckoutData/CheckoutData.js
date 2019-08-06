@@ -13,7 +13,11 @@ class CheckoutData extends Component {
           type: 'text',
           placeholder: 'Name'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       street: {
         elementType: 'input',
@@ -21,7 +25,11 @@ class CheckoutData extends Component {
           type: 'text',
           placeholder: 'Street'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       zipcode: {
         elementType: 'input',
@@ -29,7 +37,13 @@ class CheckoutData extends Component {
           type: 'text',
           placeholder: 'Zipcode'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true,
+          minLength: 5,
+          maxLength: 5
+        },
+        valid: false
       },
       email: {
         elementType: 'email',
@@ -37,7 +51,11 @@ class CheckoutData extends Component {
           type: 'text',
           placeholder: 'Email'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       deliveryMethod: {
         elementType: 'select',
@@ -47,16 +65,33 @@ class CheckoutData extends Component {
             { value: 'cheapest', displayValue: 'Cheapest' },
           ]
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       }
     },
     loading: false
+  }
+  checkValidity(value, rules) {
+    let isValid = true;
+    if (rules.required) {
+      isValid = value.trim() !== '' && isValid;
+    }
+    if (rules.minLength) {
+      isValid = value.length >= rules.minLength && isValid;
+    }
+    if (rules.maxLength) {
+      isValid = value.length <= rules.maxLength && isValid;
+    }
+    return isValid;
   }
   orderHandler = (event) => {
     event.preventDefault();
     this.setState({ loading: true });
     const formData = {};
-    for(let forElementIdentifier in this.state.orderForm) {
+    for (let forElementIdentifier in this.state.orderForm) {
       formData[forElementIdentifier] = this.state.orderForm[forElementIdentifier].value;
     }
     const order = {
@@ -75,7 +110,9 @@ class CheckoutData extends Component {
     const updatedOrderForm = { ...this.state.orderForm };
     const updatedFormElement = { ...updatedOrderForm[elementId] };
     updatedFormElement.value = event.target.value;
+    updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
     updatedOrderForm[elementId] = updatedFormElement;
+    console.log(updatedFormElement);
     this.setState({ orderForm: updatedOrderForm });
   }
   render() {
@@ -91,7 +128,11 @@ class CheckoutData extends Component {
         <h4>Enter Your Contact Data</h4>
         <form onSubmit={this.orderHandler}>
           {formElementArray.map(formElement => (
-            <Input changed={(event) => this.inputChangeHandler(event, formElement.id)} key={formElement.id} elementType={formElement.config.elementType} elementConfig={formElement.config.elementConfig} value={formElement.config.value} />
+            <Input changed={(event) => this.inputChangeHandler(event, formElement.id)}
+              key={formElement.id}
+              elementType={formElement.config.elementType}
+              elementConfig={formElement.config.elementConfig}
+              value={formElement.config.value} />
           ))}
           <Button class="Success" >ORDER NOW</Button>
         </form>
