@@ -17,7 +17,8 @@ class CheckoutData extends Component {
         validation: {
           required: true
         },
-        valid: false
+        valid: false,
+        touched: false
       },
       street: {
         elementType: 'input',
@@ -29,7 +30,8 @@ class CheckoutData extends Component {
         validation: {
           required: true
         },
-        valid: false
+        valid: false,
+        touched: false
       },
       zipcode: {
         elementType: 'input',
@@ -43,19 +45,21 @@ class CheckoutData extends Component {
           minLength: 5,
           maxLength: 5
         },
-        valid: false
+        valid: false,
+        touched: false
       },
       email: {
-        elementType: 'email',
+        elementType: 'input',
         elementConfig: {
-          type: 'text',
+          type: 'email',
           placeholder: 'Email'
         },
         value: '',
         validation: {
           required: true
         },
-        valid: false
+        valid: false,
+        touched: false
       },
       deliveryMethod: {
         elementType: 'select',
@@ -66,12 +70,11 @@ class CheckoutData extends Component {
           ]
         },
         value: '',
-        validation: {
-          required: true
-        },
-        valid: false
+        validation: {},
+        valid: true
       }
     },
+    formValid: false,
     loading: false
   }
   checkValidity(value, rules) {
@@ -111,9 +114,14 @@ class CheckoutData extends Component {
     const updatedFormElement = { ...updatedOrderForm[elementId] };
     updatedFormElement.value = event.target.value;
     updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+    updatedFormElement.touched = true;
     updatedOrderForm[elementId] = updatedFormElement;
     console.log(updatedFormElement);
-    this.setState({ orderForm: updatedOrderForm });
+    let formValid = true;
+    for (let inputIdentifier in updatedOrderForm) {
+      formValid = updatedOrderForm[inputIdentifier].valid && formValid;
+    }
+    this.setState({ orderForm: updatedOrderForm, formValid: formValid });
   }
   render() {
     const formElementArray = [];
@@ -132,9 +140,14 @@ class CheckoutData extends Component {
               key={formElement.id}
               elementType={formElement.config.elementType}
               elementConfig={formElement.config.elementConfig}
-              value={formElement.config.value} />
+              value={formElement.config.value}
+              invalid={!formElement.config.valid}
+              shouldValidate={formElement.config.validation}
+              touched={formElement.config.touched}
+              validations={formElement.config.validation}
+            />
           ))}
-          <Button class="Success" >ORDER NOW</Button>
+          <Button class="Success" disabled={!this.state.formValid} >ORDER NOW</Button>
         </form>
       </div>
     )
