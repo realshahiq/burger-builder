@@ -8,7 +8,7 @@ import Spinner from '../../UI/Spinner/Spinner';
 import WithErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
 import axios from '../../axios-orders';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../store/action';
+import * as actionTypes from '../../store/actions/actionTypes';
 class BurgerBuilder extends Component {
   state = {
     purchasing: false,
