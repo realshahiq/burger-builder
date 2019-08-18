@@ -6,15 +6,16 @@ const INGREDIENT_PRICE = {
   meat: 0.7,
 }
 const initialState = {
-  ingredients: {
-    salad: 0,
-    meat: 0,
-    bacon: 0,
-    cheese: 0
-  },
+  ingredients: null,
   totalPrice: 4,
 }
 const reducer = (state = initialState, action) => {
+  if (action.type === actionTypes.FETCH_INGREDIENTS) {
+    return {
+      ...state,
+      ingredients: action.ingredients,
+    }
+  }
   if (action.type === actionTypes.ADD_INGREDIENTS) {
     return {
       ...state,

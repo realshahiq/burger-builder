@@ -8,7 +8,6 @@ import Spinner from '../../UI/Spinner/Spinner';
 import WithErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
 import axios from '../../axios-orders';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../store/actions/actionTypes';
 import * as actionCreatorBurgerBuilder from '../../store/actions/BurgerBuilderActions';
 class BurgerBuilder extends Component {
   state = {
@@ -18,8 +17,12 @@ class BurgerBuilder extends Component {
   componentDidMount() {
     // axios.get('https://burger-builder-4a827.firebaseio.com/ingredients.json')
     //   .then(response => {
-    //     this.setState({ ingredients: response.data });
-    //   }).catch(error => { })
+    //     this.props.onFetchIngredienst(response.data);
+    //   }).catch(error => {
+    //     console.log(error);
+    //    })
+
+    this.props.onFetchIngrediens();
   }
   updatePurchaseableState = (ingredients) => {
     let count = 0;
@@ -130,7 +133,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onIngredientAdded: (ingName) => dispatch(actionCreatorBurgerBuilder.addIngredients(ingName)),
-    onIngredientRemoved: (ingName) => dispatch(actionCreatorBurgerBuilder.removeIngredients(ingName))
+    onIngredientRemoved: (ingName) => dispatch(actionCreatorBurgerBuilder.removeIngredients(ingName)),
+    onFetchIngrediens: () => dispatch(actionCreatorBurgerBuilder.fetchIngredients())
   }
 }
 
