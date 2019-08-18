@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import axios from '../../../axios-orders';
+// import axios from '../../../axios-orders';
 import Button from '../../../UI/Button/Button';
 import Spinner from '../../../UI/Spinner/Spinner';
 import Input from '../../../UI/Input/Input';
 import './CheckoutData.css';
+import { Redirect } from 'react-router';
+import {connect} from 'react-redux';
+import * as actionCreatorOrder from '../../../store/actions/orderActions';
 class CheckoutData extends Component {
   state = {
     orderForm: {
@@ -102,12 +105,13 @@ class CheckoutData extends Component {
       price: this.props.price,
       orderData: formData
     }
-    axios.post('/orders.json', order).then(response => {
-      this.setState({ loading: false });
-      this.props.history.push("/");
-    }).catch(error => {
-      this.setState({ loading: false })
-    })
+    // axios.post('/orders.json', order).then(response => {
+    //   this.setState({ loading: false });
+    //   this.props.history.push("/");
+    // }).catch(error => {
+    //   this.setState({ loading: false })
+    // })
+    this.props.onPlaceOrder(order);
   }
   inputChangeHandler = (event, elementId) => {
     const updatedOrderForm = { ...this.state.orderForm };
@@ -116,7 +120,6 @@ class CheckoutData extends Component {
     updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
     updatedFormElement.touched = true;
     updatedOrderForm[elementId] = updatedFormElement;
-    console.log(updatedFormElement);
     let formValid = true;
     for (let inputIdentifier in updatedOrderForm) {
       formValid = updatedOrderForm[inputIdentifier].valid && formValid;
@@ -151,8 +154,8 @@ class CheckoutData extends Component {
         </form>
       </div>
     )
-    if (this.state.loading) {
-      form = <Spinner />
+    if (this.props.loading) {
+      form = <Redirect to="/"/>
     }
     return (
       <div className="ContactData">
@@ -161,7 +164,16 @@ class CheckoutData extends Component {
     )
   }
 }
-
-export default CheckoutData;
-
-
+const mapStateToProps = state => {
+  return {
+    ingredients: state.brgbuilder.ingredients,
+    totalPrice: state.brgbuilder.totalPrice,
+    loading: state.order.loading
+  }
+}
+const mapDispatchToProps = dispatch => {
+  return {
+    onPlaceOrder: (order) => dispatch(actionCreatorOrder.placeOrder(order))
+  }
+}
+export default connect (mapStateToProps,mapDispatchToProps)(CheckoutData);
