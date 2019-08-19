@@ -6,7 +6,6 @@ const input = (props) => {
   if (props.invalid && props.shouldValidate && props.touched) {
     inputClasses.push('invalid');
   }
-  console.log(props.validations);
   switch (props.elementType) {
     case 'input':
       inputElement = <input onChange={props.changed} className={inputClasses.join(" ")} {...props.validations} {...props.elementConfig} value={props.value} />
