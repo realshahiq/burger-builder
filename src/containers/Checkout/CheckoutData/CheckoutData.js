@@ -78,7 +78,7 @@ class CheckoutData extends Component {
       }
     },
     formValid: false,
-    loading: false
+    loading: false,
   }
   checkValidity(value, rules) {
     let isValid = true;

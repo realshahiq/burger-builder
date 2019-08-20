@@ -34,7 +34,8 @@ class Auth extends Component {
         valid: false,
         touched: false
       }
-    }
+    },
+    check_signin: false
   }
   inputChangeHandler(event, controlName) {
     const updatedControls = {
@@ -49,7 +50,13 @@ class Auth extends Component {
   }
   onSubmitHandler = (event) => {
     event.preventDefault();
-    this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value);
+    this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value,this.state.check_signin);
+  }
+  setSignIn = () => {
+    this.setState({
+      ...this.state,
+      check_signin: true
+    })
   }
   render() {
     const formElementArray = [];
@@ -74,7 +81,8 @@ class Auth extends Component {
               validations={formElement.config.validation}
             />
           ))}
-          <Button class='Success'>AUTH</Button>
+          <Button class='Success'>Sign UP</Button>
+          <Button class='Success' clicked={this.setSignIn}>Sign IN</Button>
         </form>
       </div>
     )
