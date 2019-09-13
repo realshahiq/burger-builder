@@ -5,13 +5,15 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import BurgerBuilderReducer from './store/reducers/BugerBuilderReducer';
 import OrderReducer from './store/reducers/orderReducer';
+import AuthReducer from './store/reducers/authReducer';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import thunk from 'redux-thunk';
 const rootReducer = combineReducers({
   brgbuilder: BurgerBuilderReducer,
-  order: OrderReducer
+  order: OrderReducer,
+  auth: AuthReducer
 })
 const store = createStore(rootReducer, applyMiddleware(thunk));
 const app = (
