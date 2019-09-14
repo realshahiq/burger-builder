@@ -15,13 +15,6 @@ class BurgerBuilder extends Component {
     loading: false
   }
   componentDidMount() {
-    // axios.get('https://burger-builder-4a827.firebaseio.com/ingredients.json')
-    //   .then(response => {
-    //     this.props.onFetchIngredienst(response.data);
-    //   }).catch(error => {
-    //     console.log(error);
-    //    })
-
     this.props.onFetchIngrediens();
   }
   updatePurchaseableState = (ingredients) => {
@@ -35,32 +28,6 @@ class BurgerBuilder extends Component {
       return false;
     }
   }
-  // addIngredientHandler = (type) => {
-  //   const oldCount = this.state.ingredients[type];
-  //   const updatedCount = oldCount + 1;
-  //   const updatedIngredient = { ...this.state.ingredients };
-  //   updatedIngredient[type] = updatedCount;
-  //   const priceAddition = INGREDIENT_PRICE[type];
-  //   const oldPrice = this.state.totalPrice;
-  //   const newPrice = oldPrice + priceAddition;
-  //   this.setState({ ingredients: updatedIngredient, totalPrice: newPrice });
-  //   this.updatePurchaseableState(updatedIngredient);
-  // }
-  // removeIngredientHandler = (type) => {
-  //   const oldcount = this.state.ingredients[type];
-  //   if (oldcount > 0) {
-  //     const updatedCount = oldcount - 1;
-  //     const updatedIngredient = { ...this.state.ingredients };
-  //     updatedIngredient[type] = updatedCount;
-  //     const priceSubtracted = INGREDIENT_PRICE[type];
-  //     if (this.state.totalPrice > 4) {
-  //       const oldPrice = this.state.totalPrice;
-  //       const newPrice = oldPrice - priceSubtracted;
-  //       this.setState({ ingredients: updatedIngredient, totalPrice: newPrice });
-  //       this.updatePurchaseableState(updatedIngredient);
-  //     }
-  //   }
-  // }
   purchaseHandler = () => {
     this.setState({ purchasing: true });
   }
@@ -68,16 +35,6 @@ class BurgerBuilder extends Component {
     this.setState({ purchasing: false });
   }
   continuePurchaseHandler = () => {
-    // const queryParams = [];
-    // for (let i in this.state.ingredients) {
-    //   queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
-    // }
-    // queryParams.push("price=" + this.state.totalPrice);
-    // const queryString = queryParams.join("&");
-    // this.props.history.push({
-    //   pathname: "/checkout",
-    //   search: "?" + queryString
-    // });
     this.props.history.push('/checkout');
   }
   render() {

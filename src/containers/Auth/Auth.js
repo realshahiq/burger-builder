@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Input from '../../UI/Input/Input';
 import Button from '../../UI/Button/Button';
+import Spinner from '../../UI/Spinner/Spinner';
 import './Auth.css'
 import * as authActions from '../../store/actions/auth';
 import { connect } from 'react-redux';
@@ -50,7 +51,7 @@ class Auth extends Component {
   }
   onSubmitHandler = (event) => {
     event.preventDefault();
-    this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value,this.state.check_signin);
+    this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.check_signin);
   }
   setSignIn = () => {
     this.setState({
@@ -86,16 +87,27 @@ class Auth extends Component {
         </form>
       </div>
     )
+    let error = '';
+    if (this.props.error) {
+      error=<p>{this.props.error}</p>
+    }
     return (
       <div className="Auth">
         {form}
+        {error}
       </div>
     );
   }
 }
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = state => {
   return {
-    onAuth: (username, password ,check_signin) => dispatch(authActions.auth(username, password ,check_signin))
+    loading: state.auth.loading,
+    error: state.auth.error
   }
 }
-export default connect(null, mapDispatchToProps)(Auth);
+const mapDispatchToProps = dispatch => {
+  return {
+    onAuth: (username, password, check_signin) => dispatch(authActions.auth(username, password, check_signin))
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
