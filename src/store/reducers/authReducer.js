@@ -9,7 +9,6 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   if (action.type === actionTypes.AUTH_SUCCESS) {
-     console.log("Success");
     return {
       ...state,
       token: action.token,
@@ -18,10 +17,16 @@ const reducer = (state = initialState, action) => {
     }
   }
   if (action.type === actionTypes.AUTH_FAIL) {
-    console.log('Fail');
     return {
       ...state,
       error: action.error
+    }
+  }
+  if (action.type === actionTypes.AUTH_LOGOUT) {
+    return {
+      ...state,
+      userId: null,
+      token: null
     }
   }
   return state;

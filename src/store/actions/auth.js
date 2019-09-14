@@ -21,7 +21,11 @@ export const authFail = (error) => {
     error: error.message
   }
 }
-
+export const logout = () => {
+  return {
+    type: actionTypes.AUTH_LOGOUT
+  }
+}
 export const auth = (username, password, check_signin) => {
   return dispatch => {
     const user = {
@@ -31,13 +35,11 @@ export const auth = (username, password, check_signin) => {
     }
     if (check_signin) {
       axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBXDPckbKGUM_PhZHFgofklFBFVvpkXVtg', user)
-      .then(response => {
-        dispatch(authSuccess(response.data));
-      }).catch(error => {
-        // console.log("DASDASD");
-        // console.log(error.response.data.error.message);
-        dispatch(authFail(error.response.data.error));
-      })
+        .then(response => {
+          dispatch(authSuccess(response.data));
+        }).catch(error => {
+          dispatch(authFail(error.response.data.error));
+        })
     } else {
       axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBXDPckbKGUM_PhZHFgofklFBFVvpkXVtg', user)
         .then(response => {
