@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-// import axios from '../../../axios-orders';
 import Button from '../../../UI/Button/Button';
-import Spinner from '../../../UI/Spinner/Spinner';
 import Input from '../../../UI/Input/Input';
 import './CheckoutData.css';
 import { Redirect } from 'react-router';
