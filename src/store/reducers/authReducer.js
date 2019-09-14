@@ -9,11 +9,19 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   if (action.type === actionTypes.AUTH_SUCCESS) {
-     console.log(action.userId);
+     console.log("Success");
     return {
       ...state,
       token: action.token,
-      userId: action.userId
+      userId: action.userId,
+      loading: true
+    }
+  }
+  if (action.type === actionTypes.AUTH_FAIL) {
+    console.log('Fail');
+    return {
+      ...state,
+      error: action.error
     }
   }
   return state;
