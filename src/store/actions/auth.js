@@ -7,11 +7,11 @@ export const authStart = () => {
   }
 }
 
-export const authSuccess = (authData) => {
+export const authSuccess = (idToken, localId) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
-    token: authData.idToken,
-    userId: authData.localId
+    token: idToken,
+    userId: localId
   }
 }
 
@@ -22,6 +22,8 @@ export const authFail = (error) => {
   }
 }
 export const logout = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('localId');
   return {
     type: actionTypes.AUTH_LOGOUT
   }
@@ -36,7 +38,9 @@ export const auth = (username, password, check_signin) => {
     if (check_signin) {
       axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBXDPckbKGUM_PhZHFgofklFBFVvpkXVtg', user)
         .then(response => {
-          dispatch(authSuccess(response.data));
+          localStorage.setItem('token', response.data.idToken);
+          localStorage.setItem('localId', response.data.localId);
+          dispatch(authSuccess(response.data.idToken, response.data.localId));
         }).catch(error => {
           dispatch(authFail(error.response.data.error));
         })
@@ -47,6 +51,17 @@ export const auth = (username, password, check_signin) => {
         }).catch(error => {
           dispatch(authFail(error));
         })
+    }
+  }
+}
+export const checkAuthState = () => {
+  return dispatch => {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('localId');
+    if (!token) {
+      dispatch(logout());
+    } else {
+      dispatch(authSuccess(token, userId));
     }
   }
 }
